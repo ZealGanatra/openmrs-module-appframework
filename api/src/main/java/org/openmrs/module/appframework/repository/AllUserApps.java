@@ -34,27 +34,54 @@ public class AllUserApps {
 	
 	@Transactional(readOnly = true)
 	public UserApp getUserApp(String appId) {
+		try{
 		log.debug("getting User Apps");
 		return (UserApp) sessionFactory.getCurrentSession().get(UserApp.class, appId);
+		}
+		catch(Exception e)
+		{
+			log.debug("error while getting User Apps",e)
+		}
 	}
 	
 	@Transactional
 	public UserApp saveUserApp(UserApp userApp) {
+		try
+		{
 		log.debug("saving User App");
 		sessionFactory.getCurrentSession().saveOrUpdate(userApp);
 		return userApp;
+		}
+		catch(Exception e)
+		{
+			log.debug("error while save user",e)
+		}
 	}
 	
 	@Transactional(readOnly = true)
 	public List<UserApp> getUserApps() {
+		try
+		{
 		log.debug("getting all User Apps");
 		return sessionFactory.getCurrentSession().createCriteria(UserApp.class).list();
+		}
+		catch(Exception e)
+		{
+			log.debug("error while getting User App",e)
+		}
 	}
 	
 	@Transactional
 	public void deleteUserApp(UserApp userApp) {
+		try
+		{
 		log.debug("deleting User App");
 		sessionFactory.getCurrentSession().delete(userApp);
+		}
+		catch(Exception e)
+		{
+			log.debug("error while deleting user",e)
+		}
 	}
 	
 }
