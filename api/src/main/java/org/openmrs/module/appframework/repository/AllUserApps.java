@@ -19,34 +19,41 @@ import org.openmrs.api.db.hibernate.DbSessionFactory;
 import org.openmrs.module.appframework.domain.UserApp;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 @Repository
 public class AllUserApps {
 	
 	private DbSessionFactory sessionFactory;
-	
+	protected Log log = LogFactory.getLog(this.getClass());
+
 	public void setSessionFactory(DbSessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 	}
 	
 	@Transactional(readOnly = true)
 	public UserApp getUserApp(String appId) {
+		log.debug("getting User Apps");
 		return (UserApp) sessionFactory.getCurrentSession().get(UserApp.class, appId);
 	}
 	
 	@Transactional
 	public UserApp saveUserApp(UserApp userApp) {
+		log.debug("saving User App");
 		sessionFactory.getCurrentSession().saveOrUpdate(userApp);
 		return userApp;
 	}
 	
 	@Transactional(readOnly = true)
 	public List<UserApp> getUserApps() {
+		log.debug("getting all User Apps");
 		return sessionFactory.getCurrentSession().createCriteria(UserApp.class).list();
 	}
 	
 	@Transactional
 	public void deleteUserApp(UserApp userApp) {
+		log.debug("deleting User App");
 		sessionFactory.getCurrentSession().delete(userApp);
 	}
 	
