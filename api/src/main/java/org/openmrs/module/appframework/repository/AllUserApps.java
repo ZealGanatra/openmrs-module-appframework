@@ -36,12 +36,13 @@ public class AllUserApps {
 	public UserApp getUserApp(String appId) {
 		try{
 		log.debug("getting User Apps");
-		return (UserApp) sessionFactory.getCurrentSession().get(UserApp.class, appId);
 		}
-		catch(Exception e)
+		catch(RuntimeException e)
 		{
-			log.debug("error while getting User Apps",e)
+			log.error("error while getting User Apps",e);
+			throw e;
 		}
+		return (UserApp) sessionFactory.getCurrentSession().get(UserApp.class, appId);
 	}
 	
 	@Transactional
@@ -50,12 +51,13 @@ public class AllUserApps {
 		{
 		log.debug("saving User App");
 		sessionFactory.getCurrentSession().saveOrUpdate(userApp);
-		return userApp;
 		}
-		catch(Exception e)
+		catch(RuntimeException e)
 		{
-			log.debug("error while save user",e)
+			log.error("error while save user",e);
+			throw e;
 		}
+		return userApp;
 	}
 	
 	@Transactional(readOnly = true)
@@ -63,12 +65,13 @@ public class AllUserApps {
 		try
 		{
 		log.debug("getting all User Apps");
-		return sessionFactory.getCurrentSession().createCriteria(UserApp.class).list();
 		}
-		catch(Exception e)
+		catch(RuntimeException e)
 		{
-			log.debug("error while getting User App",e)
+			log.error("error while getting User App",e);
+			throw e;
 		}
+		return sessionFactory.getCurrentSession().createCriteria(UserApp.class).list();
 	}
 	
 	@Transactional
@@ -78,9 +81,10 @@ public class AllUserApps {
 		log.debug("deleting User App");
 		sessionFactory.getCurrentSession().delete(userApp);
 		}
-		catch(Exception e)
+		catch(RuntimeException e)
 		{
-			log.debug("error while deleting user",e)
+			log.error("error while deleting user",e);
+			throw e;
 		}
 	}
 	
