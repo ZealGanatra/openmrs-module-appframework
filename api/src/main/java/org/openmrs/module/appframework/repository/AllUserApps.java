@@ -36,13 +36,16 @@ public class AllUserApps {
 	public UserApp getUserApp(String appId) {
 		try{
 		log.debug("getting User Apps");
+		if(appId == null) {
+			throw new IllegalArgumentException("Null Id");
+		} else 
+		return (UserApp) sessionFactory.getCurrentSession().get(UserApp.class, appId);
 		}
 		catch(RuntimeException e)
 		{
 			log.error("error while getting User Apps",e);
-			throw e;
+			throw new IllegalArgumentException("Illegal Id");
 		}
-		return (UserApp) sessionFactory.getCurrentSession().get(UserApp.class, appId);
 	}
 	
 	@Transactional
@@ -51,13 +54,13 @@ public class AllUserApps {
 		{
 		log.debug("saving User App");
 		sessionFactory.getCurrentSession().saveOrUpdate(userApp);
+		return userApp;
 		}
 		catch(RuntimeException e)
 		{
 			log.error("error while save user",e);
 			throw e;
 		}
-		return userApp;
 	}
 	
 	@Transactional(readOnly = true)
@@ -65,13 +68,13 @@ public class AllUserApps {
 		try
 		{
 		log.debug("getting all User Apps");
+		return sessionFactory.getCurrentSession().createCriteria(UserApp.class).list();
 		}
 		catch(RuntimeException e)
 		{
 			log.error("error while getting User App",e);
 			throw e;
 		}
-		return sessionFactory.getCurrentSession().createCriteria(UserApp.class).list();
 	}
 	
 	@Transactional
